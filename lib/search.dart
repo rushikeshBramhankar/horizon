@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:horizon_project/home.dart';
 
-class Profilescreen extends StatefulWidget {
-  const Profilescreen({super.key});
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  State<Profilescreen> createState() => _ProfilescreenState();
+  State<Search> createState() => _SearchState();
 }
 
-class _ProfilescreenState extends State<Profilescreen> {
+class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,57 +19,50 @@ class _ProfilescreenState extends State<Profilescreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 15,
-                ),
-                Stack(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Material(
-                      elevation: 8,
-                      shape: CircleBorder(),
-                      child: Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey[100],
-                        ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/myimage.jpg',
-                            fit: BoxFit
-                                .cover, // Ensure the image fits within the circle
-                          ),
+                    Image.asset(
+                      'assets/travel2.png',
+                      height: 60,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      height: 35,
+                      width: 230,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                              size: 22,
+                            ),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Text(
+                              'Search',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 SizedBox(
                   height: 9,
-                ),
-                Center(
-                  child: Text(
-                    'Rushikesh Shimpi',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Divider(
-                  color: Colors.grey,
-                  thickness: 3,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                SizedBox(
-                  height: 15,
                 ),
                 Row(
                   children: [
