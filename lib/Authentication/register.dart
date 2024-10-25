@@ -176,9 +176,8 @@ class _RegisterState extends State<Register> {
                         Icons.remove_red_eye_outlined,
                         size: 20,
                       ),
-                      border: InputBorder.none, // Remove underline
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 17), // Vertically center the text and icon
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 17),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -236,8 +235,6 @@ class _RegisterState extends State<Register> {
                 ),
 
                 SizedBox(height: 10),
-
-                // Social Login Buttons (Facebook, Google, Apple)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -251,11 +248,8 @@ class _RegisterState extends State<Register> {
                           Icons.g_mobiledata,
                           color: Color.fromARGB(255, 42, 152, 17),
                         ),
-                        // icon: Image.asset('assets/google_icon.png'),
                         iconSize: 30,
-                        onPressed: () {
-                          // Google login logic
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   ],

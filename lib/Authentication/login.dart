@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:horizon_project/Authentication/forgotPassword.dart';
 import 'package:horizon_project/Authentication/register.dart';
+import 'package:horizon_project/home.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -190,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => Home()),
                     );
                   },
                   child: Text(
