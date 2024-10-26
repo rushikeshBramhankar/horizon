@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:horizon_project/bottomNavigation.dart';
 import 'package:horizon_project/home.dart';
+import 'package:horizon_project/profile.dart';
+import 'package:horizon_project/search.dart';
 
 class add extends StatefulWidget {
   const add({super.key});
@@ -9,6 +12,30 @@ class add extends StatefulWidget {
 }
 
 class _addState extends State<add> {
+  int _selectedItem = 2;
+  void _onItemTap(int index) {
+    if (_selectedItem == index) return; // Prevent navigating to the same screen
+    setState(() {
+      _selectedItem = index;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          if (index == 0) {
+            return Home();
+          } else if (index == 1) {
+            return Search();
+          } else if (index == 3) {
+            return Profilescreen();
+          } else {
+            return add();
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +105,7 @@ class _addState extends State<add> {
                 ),
                 Center(
                   child: Text(
-                    'Upload files',
+                    'Upload photos',
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 15,
@@ -146,6 +173,10 @@ class _addState extends State<add> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationWidget(
+        selectedItem: _selectedItem,
+        onTap: _onItemTap,
       ),
     );
   }

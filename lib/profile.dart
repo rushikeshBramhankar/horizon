@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:horizon_project/add.dart';
+import 'package:horizon_project/bottomNavigation.dart';
 import 'package:horizon_project/home.dart';
+import 'package:horizon_project/search.dart';
 
 class Profilescreen extends StatefulWidget {
   const Profilescreen({super.key});
@@ -9,6 +12,30 @@ class Profilescreen extends StatefulWidget {
 }
 
 class _ProfilescreenState extends State<Profilescreen> {
+  int _selectedItem = 3;
+  void _onItemTap(int index) {
+    if (_selectedItem == index) return; // Prevent navigating to the same screen
+    setState(() {
+      _selectedItem = index;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          if (index == 0) {
+            return Home();
+          } else if (index == 1) {
+            return Search();
+          } else if (index == 2) {
+            return add();
+          } else {
+            return Profilescreen();
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -327,6 +354,10 @@ class _ProfilescreenState extends State<Profilescreen> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationWidget(
+        selectedItem: _selectedItem,
+        onTap: _onItemTap,
       ),
     );
   }

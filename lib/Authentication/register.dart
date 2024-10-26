@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:horizon_project/Authentication/login.dart';
-import 'package:horizon_project/Authentication/otp_verification.dart';
+import 'package:horizon_project/home.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -200,8 +200,7 @@ class _RegisterState extends State<Register> {
                     ),
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => OtpVerificationPage()),
+                        MaterialPageRoute(builder: (context) => Home()),
                       );
                     },
                     child: Text(

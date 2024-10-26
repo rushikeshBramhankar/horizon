@@ -12,14 +12,16 @@ class LoginSignupPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             // Logo with Welcome text
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 30, 150, 0),
-              child: Image.asset(
-                'assets/tree1.png', // Path to AstharaX logo
-                height: 200,
-              ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(0, 30, 150, 0),
+            //   child: Image.asset(
+            //     'assets/tree1.png', // Path to AstharaX logo
+            //     height: 200,
+            //   ),
+            // ),
+            SizedBox(
+              height: 90,
             ),
-
             Column(
               children: [
                 Text(
@@ -48,7 +50,7 @@ class LoginSignupPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 40),
+            SizedBox(height: 180),
             // Login Button
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -107,6 +109,7 @@ class LoginSignupPage extends StatelessWidget {
                 ],
               ),
             ),
+
             Image.asset(
               'assets/flower.png', // Path to AstharaX logo
               height: 120,

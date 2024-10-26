@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:horizon_project/Authentication/otp_verification.dart';
+
+import 'package:horizon_project/home.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   @override
@@ -127,8 +128,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => OtpVerificationPage()),
+                          MaterialPageRoute(builder: (context) => Home()),
                         );
                       },
                       child: Text(
