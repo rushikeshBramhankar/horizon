@@ -1,4 +1,4 @@
-package com.example.horizon_project
+package on.app
 
 import io.flutter.embedding.android.FlutterActivity
 

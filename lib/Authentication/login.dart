@@ -1,5 +1,5 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:horizon_project/Authentication/forgotPassword.dart';
 import 'package:horizon_project/Authentication/register.dart';
 import 'package:horizon_project/home.dart';
@@ -12,7 +12,26 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _obscurePassword = true;
+
+  void loginUser() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // If login is successful, navigate to Home screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } catch (e) {
+      // If login fails, show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please check the email/password")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +86,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              SizedBox(height: 40),
               SizedBox(height: 20),
 
-              // Email/Phone Number Field
+              // Email Field
               Container(
                 height: 55,
                 width: 380,
@@ -87,15 +107,15 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                     ),
                     prefixIcon: Icon(Icons.mail_outline),
-                    border: InputBorder.none, // Remove underline
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 17), // Vertically center the text and icon
+                    border: InputBorder.none,
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
 
               SizedBox(height: 20),
+
+              // Password Field
               Container(
                 height: 55,
                 width: 380,
@@ -104,7 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.grey[200],
                 ),
                 child: TextField(
-                  controller: emailController,
+                  controller: passwordController,
+                  obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     hintText: "Enter your Password",
                     hintStyle: TextStyle(
@@ -113,71 +134,26 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                     ),
                     prefixIcon: Icon(Icons.lock_outline_rounded),
-                    border: InputBorder.none, // Remove underline
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 17), // Vertically center the text and icon
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                    border: InputBorder.none,
                   ),
-                  keyboardType: TextInputType.emailAddress,
                 ),
               ),
 
-              SizedBox(height: 5),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => ForgotPasswordPage()),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.check_box_outlined,
-                          color: Colors.black,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "Save Password",
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.4),
-                        ),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (context) => ForgotPasswordPage()),
-                      );
-                    },
-                    child: Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Color(0xFF00ACDF),
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.2),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 20),
+              SizedBox(height: 70),
 
               // Login Button
-              SizedBox(
-                height: 120,
-              ),
               Container(
                 height: 50,
                 width: 380,
@@ -189,11 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => Home()),
-                    );
-                  },
+                  onPressed: loginUser,
                   child: Text(
                     'Login',
                     style: TextStyle(
@@ -203,56 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
-              SizedBox(height: 20),
-
-              // Divider with "or login with"
-              Row(
-                children: <Widget>[
-                  Expanded(child: Divider(thickness: 1)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "or Login with",
-                      style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.4),
-                    ),
-                  ),
-                  Expanded(child: Divider(thickness: 1)),
-                ],
-              ),
-
-              SizedBox(height: 20),
-
-              // Social Login Buttons (Facebook, Google, Apple)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.grey[200]),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.g_mobiledata,
-                        color: Color.fromARGB(255, 42, 152, 17),
-                      ),
-                      // icon: Image.asset('assets/google_icon.png'),
-                      iconSize: 30,
-                      onPressed: () {
-                        // Google login logic
-                      },
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 30),
-
+              SizedBox(height: 10),
               // Register Now Option
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

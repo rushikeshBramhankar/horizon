@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:horizon_project/Authentication/login.dart';
 import 'package:horizon_project/home.dart';
 
@@ -13,7 +15,60 @@ class _RegisterState extends State<Register> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
   bool _obscurePassword = true;
+
+  // Method to register the user
+  Future<void> registerUser() async {
+    String fullName = fullNameController.text.trim();
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+
+    if (fullName.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please fill all fields")),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Passwords do not match")),
+      );
+      return;
+    }
+
+    try {
+      // Register user with Firebase Authentication
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Save user data to Firebase Realtime Database
+        await _database.child("users").child(user.uid).set({
+          "fullName": fullName,
+          "email": email,
+        });
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Registration failed")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,28 +92,23 @@ class _RegisterState extends State<Register> {
                         border: Border.all(color: Colors.grey, width: 1),
                       ),
                       child: IconButton(
-                        padding: EdgeInsets.zero, // Remove padding
-                        icon: Icon(Icons.arrow_back_ios,
-                            size: 16), // Adjust icon size
+                        padding: EdgeInsets.zero,
+                        icon: Icon(Icons.arrow_back_ios, size: 16),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
                     ),
-                    SizedBox(
-                      width: 75,
-                    ),
+                    SizedBox(width: 75),
                     Center(
                       child: Image.asset(
                         'assets/travel2.png',
-                        height: 60, // Adjust the size as per your requirement
+                        height: 60,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Center(
                   child: Text(
                     "Hello! Register to \n     get started",
@@ -68,7 +118,6 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20),
                 Container(
                   height: 55,
@@ -87,15 +136,12 @@ class _RegisterState extends State<Register> {
                         fontWeight: FontWeight.bold,
                       ),
                       prefixIcon: Icon(Icons.person_2_outlined),
-                      border: InputBorder.none, // Remove underline
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 17), // Vertically center the text and icon
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 17),
                     ),
-                    keyboardType: TextInputType.emailAddress,
                   ),
                 ),
                 SizedBox(height: 20),
-                // Email/Phone Number Field
                 Container(
                   height: 55,
                   width: 380,
@@ -113,16 +159,13 @@ class _RegisterState extends State<Register> {
                         fontWeight: FontWeight.bold,
                       ),
                       prefixIcon: Icon(Icons.mail_outline),
-                      border: InputBorder.none, // Remove underline
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 17), // Vertically center the text and icon
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 17),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-
                 SizedBox(height: 20),
-
                 Container(
                   height: 55,
                   width: 380,
@@ -132,6 +175,7 @@ class _RegisterState extends State<Register> {
                   ),
                   child: TextField(
                     controller: passwordController,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       hintText: "Password",
                       hintStyle: TextStyle(
@@ -140,21 +184,24 @@ class _RegisterState extends State<Register> {
                         fontWeight: FontWeight.bold,
                       ),
                       prefixIcon: Icon(Icons.lock_outline_rounded),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye_outlined,
-                        size: 20,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
                       ),
-                      border: InputBorder.none, // Remove underline
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 17), // Vertically center the text and icon
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 17),
                     ),
-                    keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-
                 SizedBox(height: 20),
-
-                // Confirm Password Field
                 Container(
                   height: 55,
                   width: 380,
@@ -163,7 +210,8 @@ class _RegisterState extends State<Register> {
                     color: Colors.grey[200],
                   ),
                   child: TextField(
-                    controller: passwordController,
+                    controller: confirmPasswordController,
+                    obscureText: _obscurePassword,
                     decoration: InputDecoration(
                       hintText: "Confirm your Password",
                       hintStyle: TextStyle(
@@ -172,20 +220,12 @@ class _RegisterState extends State<Register> {
                         fontWeight: FontWeight.bold,
                       ),
                       prefixIcon: Icon(Icons.lock_outline_rounded),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye_outlined,
-                        size: 20,
-                      ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(vertical: 17),
                     ),
-                    keyboardType: TextInputType.emailAddress,
                   ),
                 ),
-                SizedBox(height: 20),
-                SizedBox(
-                  height: 60,
-                ),
+                SizedBox(height: 40),
                 Container(
                   height: 50,
                   width: 380,
@@ -198,11 +238,7 @@ class _RegisterState extends State<Register> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Home()),
-                      );
-                    },
+                    onPressed: registerUser,
                     child: Text(
                       'Register',
                       style: TextStyle(
@@ -212,9 +248,7 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 20),
-
                 Row(
                   children: <Widget>[
                     Expanded(child: Divider(thickness: 1)),
@@ -232,7 +266,6 @@ class _RegisterState extends State<Register> {
                     Expanded(child: Divider(thickness: 1)),
                   ],
                 ),
-
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -265,20 +298,17 @@ class _RegisterState extends State<Register> {
                           fontWeight: FontWeight.bold,
                           letterSpacing: 0.4),
                     ),
-                    GestureDetector(
-                      onTap: () {
+                    TextButton(
+                      onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
-                      child: Text(
-                        " Login Now",
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Color(0xFF00ACDF),
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.2),
-                      ),
+                      child: Text("Login",
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),

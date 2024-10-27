@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339631999877",
+    "project_id": "horizon-3f6ab",
+    "storage_bucket": "horizon-3f6ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339631999877:android:1b59654a69e53651db52ec",
+        "android_client_info": {
+          "package_name": "on.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2PnoPdOUGvqycG44GUYMgdEDEJkAt1n0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
