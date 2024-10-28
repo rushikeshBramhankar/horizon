@@ -77,7 +77,7 @@ class _ProfilescreenState extends State<Profilescreen> {
                 ),
                 Center(
                   child: Text(
-                    'Rushikesh Shimpi',
+                    'Rushikesh Bramhankar',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,

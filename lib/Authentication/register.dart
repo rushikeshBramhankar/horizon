@@ -19,7 +19,6 @@ class _RegisterState extends State<Register> {
   final DatabaseReference _database = FirebaseDatabase.instance.ref();
   bool _obscurePassword = true;
 
-  // Method to register the user
   Future<void> registerUser() async {
     String fullName = fullNameController.text.trim();
     String email = emailController.text.trim();
@@ -78,6 +77,7 @@ class _RegisterState extends State<Register> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -247,44 +247,6 @@ class _RegisterState extends State<Register> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: <Widget>[
-                    Expanded(child: Divider(thickness: 1)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        "or Register with",
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.4),
-                      ),
-                    ),
-                    Expanded(child: Divider(thickness: 1)),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.grey[200]),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.g_mobiledata,
-                          color: Color.fromARGB(255, 42, 152, 17),
-                        ),
-                        iconSize: 30,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
                 ),
                 SizedBox(height: 10),
                 Row(

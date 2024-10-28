@@ -64,7 +64,7 @@ class _SearchState extends State<Search> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Row(
                           children: [
                             Icon(
@@ -72,14 +72,25 @@ class _SearchState extends State<Search> {
                               color: Colors.grey,
                               size: 22,
                             ),
-                            SizedBox(
-                              width: 7,
-                            ),
-                            Text(
-                              'Search',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
+                            SizedBox(width: 7),
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                ),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
+                                onSubmitted: (value) {
+                                  // Handle search query submission if needed
+                                },
                               ),
                             ),
                           ],

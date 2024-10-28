@@ -109,10 +109,12 @@ class LoginSignupPage extends StatelessWidget {
                 ],
               ),
             ),
-
+            SizedBox(
+              height: 20,
+            ),
             Image.asset(
-              'assets/flower.png', // Path to AstharaX logo
-              height: 120,
+              'assets/flower.png',
+              height: 100,
             ),
           ],
         ),
